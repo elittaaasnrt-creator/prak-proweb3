@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Proses JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: black;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .dark-mode {
+      background-color: #222;
+      color: white;
+    }
+
+    button {
+      margin: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    /* Container untuk card biar sejajar */
+    #cardContainer {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .card {
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      padding: 15px;
+      width: 180px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card.dark-mode {
+      background-color: #333;
+      border-color: #666;
+      color: white;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      padding: 2px 5px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .formContent {
+      background: white;
+      padding: 20px;
+      width: 250px;
+      margin: 100px auto;
+      border-radius: 5px;
+      text-align: left;
+    }
+
+    .dark-mode .formContent {
+      background: #444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Demo Proses JavaScript</h2>
+
+  <button id="modeBtn">🌙 Mode Malam</button>
+  <button id="tambahCardBtn">➕ Tambah Card</button>
+  <button id="formBtn">📝 Tampilkan Form</button>
+  <button id="nimBtn">🔍 Cari KOM Mahasiswa</button>
+
+  <div id="cardContainer"></div>
+
+  <div id="popupForm" class="popup">
+    <div class="formContent">
+      <h3>Form Input</h3>
+      <label>Nama: </label>
+      <input type="text" placeholder="Masukkan nama"><br><br>
+      <label>Email: </label>
+      <input type="email" placeholder="Masukkan email"><br><br>
+      <button id="closeForm">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    const modeBtn = document.getElementById("modeBtn");
+    modeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(card => card.classList.toggle("dark-mode"));
+
+      modeBtn.textContent = document.body.classList.contains("dark-mode")
+        ? "☀️ Mode Siang"
+        : "🌙 Mode Malam";
+    });
+
+    const tambahCardBtn = document.getElementById("tambahCardBtn");
+    const cardContainer = document.getElementById("cardContainer");
+    let index = 1;
+
+    tambahCardBtn.addEventListener("click", () => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <strong>Card ${index}</strong><br>
+        <p>Ini card ke-${index}</p>
+        <button class="close-btn">x</button>
+      `;
+      cardContainer.appendChild(card);
+      index++;
+
+      const closeBtn = card.querySelector(".close-btn");
+      closeBtn.addEventListener("click", () => {
+        card.remove();
+      });
+    });
+
+    const formBtn = document.getElementById("formBtn");
+    const popupForm = document.getElementById("popupForm");
+    const closeForm = document.getElementById("closeForm");
+
+    formBtn.addEventListener("click", () => {
+      popupForm.style.display = "block";
+    });
+
+    closeForm.addEventListener("click", () => {
+      popupForm.style.display = "none";
+    });
+
+    const nimBtn = document.getElementById("nimBtn");
+    nimBtn.addEventListener("click", () => {
+      const nim = prompt("Masukkan NIM Mahasiswa TI:");
+      if (!nim) {
+        alert("NIM tidak boleh kosong!");
+        return;
+      }
+
+      if (nim.endsWith("1") || nim.endsWith("2")) {
+        alert(`NIM ${nim} berada di KOM A`);
+      } else if (nim.endsWith("3") || nim.endsWith("4")) {
+        alert(`NIM ${nim} berada di KOM B`);
+      } else {
+        alert(`NIM ${nim} berada di KOM C`);
+      }
+    });
+  </script>
+</body>
+</html>
